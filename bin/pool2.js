@@ -3,17 +3,26 @@ const  mysql = require('mysql2/promise');
 const player = ({pool,data}) => {
     return async() => {
         while(true){
-            const conn = await pool.getConnection();
-            const [results, fields] = await conn.query('SELECT ' + data + ' AS solution');
-            console.log('The solution is: ', results[0].solution);
-            conn.release();
+            try{
+                const conn = await pool.getConnection();
+                try{
+                    const [results, fields] = await conn.query('SELECT ' + data + ' AS solution');
+                    console.log('The solution is: ', results[0].solution);
+                }catch(e){
+                    console.log(e);
+                }
+                conn.release();
+            }catch(e){
+                console.log(e);
+                continue;
+            }
         }
     }
 }
 
 const main = async () => {
     const pool = await mysql.createPool({
-        connectionLimit: 4,
+        connectionLimit: 1,
         host:'localhost',
         user: 'root',
         database: 'test'
