@@ -22,13 +22,13 @@ const player = ({pool,data}) => {
 
 const main = async () => {
     const pool = await mysql.createPool({
-        connectionLimit: 1,
+        connectionLimit: 100,
         host:'localhost',
         user: 'root',
         database: 'test'
     });
 
-    const list = ["1+1","2+2","3+3","4+4","5+5","6+6"]
+    const list = ["1+1","2+2","3+3","4+4","5+5","6+6","7+7","8+8","9+9","10+10"]
     const result = await Promise.all(list.map(v => {
         return player({pool, data:v})()
     }))
